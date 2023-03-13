@@ -31,6 +31,7 @@
   }
   .field input:focus {
     outline: none;
+ 
   }
   .field button {
     width: 100%;
