@@ -9,9 +9,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
   const auth = useAuth();
+  console.log(auth);
   
 //   const notify = () => toast('Wow so easy !');
-  const handleSumbmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoggingIn(true);
     if (!email || !password) {
@@ -40,7 +41,7 @@ const Login = () => {
         setLoggingIn(false);
   };
   return (
-    <form className={styles.loginForm} onSubmit={handleSumbmit}>
+    <form className={styles.loginForm} onSubmit={handleSubmit}>
       <span className={styles.loginSignupHeader}>Log In</span>
 
       <div className={styles.field}>
