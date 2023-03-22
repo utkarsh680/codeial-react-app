@@ -5,7 +5,6 @@ const customFetch = async (url, { body, ...customConfig }) => {
 
   const headers = {
     'content-type': 'application/x-www-form-urlencoded',
-    
   };
 
   if (token) {
@@ -45,18 +44,29 @@ const customFetch = async (url, { body, ...customConfig }) => {
   }
 };
 
-export const getPosts = (page = 1, limit = 3) => {
+export const getPosts = (page = 1, limit = 5) => {
   return customFetch(API_URLS.posts(page, limit), {
     method: 'GET',
   });
 };
 
 export const login = (email, password) => {
-  return customFetch(API_URLS.login, {
+  return customFetch(API_URLS.login(), {
     method: 'POST',
-    body: {
-      email,
-      password,
-    },
+    body: { email, password },
   });
-}
+};
+
+export const register = async (name, email, password, confirmPassword) => {
+  return customFetch(API_URLS.signup(), {
+    method: 'POST',
+    body: { name, email, password, confirm_password: confirmPassword },
+  });
+};
+
+export const editProfile = async (userId, name, password, confirmPassword) => {
+  return customFetch(API_URLS.editUser(), {
+    method: 'POST',
+    body: { id: userId, name, password, confirm_password: confirmPassword },
+  });
+};

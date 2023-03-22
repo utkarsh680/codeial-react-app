@@ -1,32 +1,18 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate} from 'react-router-dom';
 
-import { Home, Login } from '../pages';
+import { Home, Login, Signup, Settings } from '../pages';
 import { Navbar, Loader } from '../components';
 import { useAuth } from '../hooks';
-import styles from '../styles/navbar.module.css';
 
-const About = () => {
-  return <div>About</div>;
-};
 
-const UserInfo = () => {
-  return (
-    <div>
-      <ul className={styles.ul}>
-        <li>name: hello</li>
-        <li>age: 18</li>
-        <li>add:parasnath</li>
-      </ul>
-    </div>
-  );
-};
-
+function PrivateRoute({ children}){
+  const auth = useAuth();
+  return auth.user ? children : <Navigate to="/login" />;
+}
 function App() {
   const auth = useAuth();
-
-
   if (auth.loading) {
     return <Loader />;
   }
@@ -37,9 +23,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/user/hello" element={<UserInfo />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Signup />} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="*" element={<h1>404: Not Found</h1>} />
         </Routes>
       </Router>

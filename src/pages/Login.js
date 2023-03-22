@@ -1,7 +1,8 @@
 import styles from '../styles/login.module.css';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
+import { useState  } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks';
 
 const Login = () => {
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     setLoggingIn(true);
     if (!email || !password) {
-      return toast.error('Please fill in all fields', {
+     return  toast.error('Please fill in all fields', {
         appearance: 'error',
         autoClose: 3000,
         autodismiss: true,
@@ -40,6 +41,9 @@ const Login = () => {
         }
         setLoggingIn(false);
   };
+  if(auth.user){
+    return <Navigate to="/" />
+  }
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
       <span className={styles.loginSignupHeader}>Log In</span>
