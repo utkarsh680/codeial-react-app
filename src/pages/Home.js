@@ -4,6 +4,7 @@ import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { getPosts } from "../api";
 import Loader from "../components/Loader";
+import { Link } from "react-router-dom";
 
 const Home = () => {
 
@@ -35,7 +36,7 @@ const Home = () => {
                   alt="user-pic"
                 />
                 <div>
-                  <span className={styles.postAuthor}>{posts.user.name}</span>
+                  <Link to={`/user/${posts.user._id}`} className={styles.postAuthor}>{posts.user.name}</Link>
                   <span className={styles.postTime}>a minute ago</span>
                 </div>
               </div>

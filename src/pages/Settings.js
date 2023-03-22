@@ -69,10 +69,7 @@ clearForm();
   setSavingForm(false);
 };
 
-
-  
- 
-  return (
+return (
     <div className={styles.settings}>
       <div className={styles.imgContainer}>
         <img

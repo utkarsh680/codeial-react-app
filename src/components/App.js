@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route,Navigate} from 'react-router-dom';
 
-import { Home, Login, Signup, Settings } from '../pages';
+import { Home, Login, Signup, Settings, UserProfile } from '../pages';
 import { Navbar, Loader } from '../components';
 import { useAuth } from '../hooks';
 
@@ -26,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/user/:userId" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
           <Route path="*" element={<h1>404: Not Found</h1>} />
         </Routes>
       </Router>
