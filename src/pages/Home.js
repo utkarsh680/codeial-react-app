@@ -27,8 +27,8 @@ const Home = () => {
   }
   return (
     <div className={styles.postsList}>
-        {posts.map((posts) => (
-            <div className={styles.postWrapper} key = {`post-${posts._id}`}>
+        {posts.map((post) => (
+            <div className={styles.postWrapper} key = {`post-${post._id}`}>
             <div className={styles.postHeader}>
               <div className={styles.postAvatar}>
                 <img
@@ -37,12 +37,12 @@ const Home = () => {
                 />
                 <div>
                   <Link to={{
-                    pathname:`/user/${posts.user._id}`,
+                    pathname:`/user/${post.user._id}`,
                  
-                  }}state={{user: posts.user}}
+                  }}state={{user: post.user}}
 
                   className={styles.postAuthor
-                  }>{posts.user.name}
+                  }>{post.user.name}
                   </Link>
                   <span className={styles.postTime}>a minute ago</span>
                 </div>
@@ -71,8 +71,8 @@ const Home = () => {
               </div>
     
               <div className={styles.postCommentsList}>
-                {posts.comments.map((comment) => (
-                  <Comment comment = {comment} />
+                {post.comments.map((comment) => (
+                  <Comment comment = {comment} key = {`comment-${comment._id}`} />
                   ))}
                
               </div>
@@ -85,7 +85,7 @@ const Home = () => {
   );
 };
 Home.propTypes = {
-  posts:PropsType.array.isRequired
+  post:PropsType.array.isRequired
 };
 
 export default Home;

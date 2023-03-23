@@ -1,12 +1,56 @@
-
 import styles from '../styles/settings.module.css';
-import { useLocation } from 'react-router-dom';
+import { Loader } from '../components';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchUserProfile } from '../api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../hooks';
 
+const UserProfile = () => {
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+  const { userId } = useParams();
+  const navigate = useNavigate();
+  const auth = useAuth();
 
-const UserProfile = () => { 
-  const location = useLocation();
-  console.log('location', location);
-  const {user= {}} = location.state;
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetchUserProfile(userId);
+
+      if (response.success) {
+        setLoading(false);
+        setUser(response.data.user);
+      } else {
+        toast.error('User not found');
+        setLoading(false);
+        return navigate('/');
+      }
+    };
+
+    getUser();
+  }, [userId, navigate]);
+
+  if (loading) {
+    return <Loader />;
+  }
+  const checkIfUserIsAFriend = () => {
+    const friends = auth.user.friends;
+
+    if(friends === undefined){
+      return false;
+    }
+
+    const friendIds = friends.map((friend) => friend.to_user._id);
+    const index = friendIds.indexOf(userId);
+
+    if (index !== -1) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <div className={styles.settings}>
       <div className={styles.imgContainer}>
@@ -26,13 +70,14 @@ const UserProfile = () => {
         <div className={styles.fieldValue}>{user.name}</div>
       </div>
       <div className={styles.btnGrp}>
-      <button className={`button ${styles.savebtn}`}>Add Friend</button>
-      <button className={`button ${styles.savebtn}`}>Remove Friend</button>
+        {checkIfUserIsAFriend() ? (
+          <button className={`button ${styles.savebtn}`}>Remove Friend</button>
+        ) : (
+          <button className={`button ${styles.savebtn}`}>Add Friend</button>
+        )}
       </div>
     </div>
   );
 };
 
 export default UserProfile;
-
-
