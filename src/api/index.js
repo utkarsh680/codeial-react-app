@@ -76,3 +76,9 @@ export const fetchUserProfile = (userId) => {
   });
 };
 
+export const fetchUserFriends = () => {
+  return customFetch(API_URLS.friends(), {
+    method: 'GET',
+  });
+}
+
