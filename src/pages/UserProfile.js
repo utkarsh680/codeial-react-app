@@ -2,7 +2,7 @@ import styles from '../styles/settings.module.css';
 import { Loader } from '../components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchUserProfile ,addFriend} from '../api';
+import { fetchUserProfile ,addFriend, removeFriend} from '../api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../hooks';
@@ -35,39 +35,54 @@ const UserProfile = () => {
   if (loading) {
     return <Loader />;
   }
+
   const checkIfUserIsAFriend = () => {
+        
     const friends = auth.user.friends;
 
-    if(friends === undefined){
-      return false;
+    if (friends === undefined) {
+        return false;
     }
+    const friendsId = friends.map(friend => friend.to_user._id);
+    const index = friendsId.indexOf(userId);
 
-    const friendIds = friends.map(friend=> friend.to_user._id);
-    const index = friendIds.indexOf(userId);
 
     if (index !== -1) {
-      return true;
+        return true;
     }
 
     return false;
-  };
 
-  const handleRemoveFriendClick = async () => {};
+}
+  const handleRemoveFriendClick = async () => {
+    setRequestInProgress(true);
+    const response = await removeFriend(userId);
+    if(response.success){
+      const frienship = auth.user.friends.filter(friend=> friend.to_user._id === userId);
+      auth.updateUserFriends(false, frienship[0]);
+      toast.success('Friend removed successfully');
+
+    }else{
+      toast.error(response.message);
+    }
+    setRequestInProgress(false);
+
+  };
 
   const handleAddFriendClick = async () => {
     setRequestInProgress(true);
+
     const response = await addFriend(userId);
+    
+
     if(response.success){
-      const {frienship} = response.data;
-      auth.updateUserFriends(true, frienship);
-      toast.success('Friend added successfully',{
-        appearance: 'success',
-      });
+      const {friendship} = response.data;
+
+      auth.updateUserFriends(true, friendship);
+      toast.success('Friend added successfully');
 
     }else{
-      toast.error(response.message, {
-        appearance: 'error',
-      });
+      toast.error(response.message);
     }
     setRequestInProgress(false);
 
