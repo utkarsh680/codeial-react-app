@@ -3,15 +3,18 @@ import { useState } from 'react';
 import {addPost} from '../api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { usePosts } from '../hooks';
 
 const CreatePost = () => {
   const [post, setPost] = useState('');
   const [addingPost, setAddingPost] = useState(false);
+  const posts = usePosts();
 
   const handleAddPostClick = async () => {
     setAddingPost(true);
     const response = await addPost(post);
     if (response.success) {
+      posts.addPostToState(response.data.post);
       toast.success('Post added successfully', {
         appearance: 'success',
         autoDismiss: true,
