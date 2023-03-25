@@ -65,7 +65,7 @@ const Signup = () => {
     setSigningUp(false);
   };
   if(auth.user){
-     return <Navigate to="/"/>
+     return <Navigate to="/j"/>
   }
 
   return (

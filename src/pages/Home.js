@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../api";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
+import { FriendsList, CreatePost } from "../components";
+import { useAuth } from "../hooks";
 
 const Home = () => {
 
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const auth = useAuth();
     useEffect(() => {
     const fetchPosts = async () => {
       const response = await getPosts();
@@ -26,7 +29,9 @@ const Home = () => {
     return <Loader />;
   }
   return (
+    <div className={styles.home}>
     <div className={styles.postsList}>
+    <CreatePost />
         {posts.map((post) => (
             <div className={styles.postWrapper} key = {`post-${post._id}`}>
             <div className={styles.postHeader}>
@@ -81,6 +86,8 @@ const Home = () => {
 
         ))}
       
+    </div>
+    {auth.user && <FriendsList />}
     </div>
   );
 };
